@@ -1,11 +1,15 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, UseInterceptors, Req, Res, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiHeader } from '@nestjs/swagger';
 import { WebhookService } from './webhook.service';
 import { WebhookPayloadDto } from './dto/webhook-payload.dto';
+import { GoldskyWebhookDto } from './dto/goldsky-webhook.dto';
 import { GoldskyWebhookGuard } from './guards/goldsky-webhook.guard';
+import { WebhookLoggingInterceptor } from './interceptors/webhook-logging.interceptor';
+import { Request, Response } from 'express';
 
 @ApiTags('webhook')
 @Controller('webhook')
+@UseInterceptors(WebhookLoggingInterceptor)
 export class WebhookController {
   constructor(private readonly webhookService: WebhookService) {}
 
@@ -21,7 +25,7 @@ export class WebhookController {
     description: 'Goldsky webhook secret for authentication',
     required: true,
   })
-  @ApiBody({ type: WebhookPayloadDto })
+  @ApiBody({ type: GoldskyWebhookDto })
   @ApiResponse({
     status: 201,
     description: 'Subscription created successfully',
@@ -65,7 +69,7 @@ export class WebhookController {
       },
     },
   })
-  async handleSubscriptionWebhook(@Body() data: WebhookPayloadDto) {
+  async handleSubscriptionWebhook(@Body() data: GoldskyWebhookDto) {
     try {
       console.log('Received webhook payload:', JSON.stringify(data, null, 2));
       const subscription = await this.webhookService.createSubscription(data);
@@ -140,7 +144,7 @@ export class WebhookController {
     description: 'Goldsky webhook secret for authentication',
     required: true,
   })
-  @ApiBody({ type: WebhookPayloadDto })
+  @ApiBody({ type: GoldskyWebhookDto })
   @ApiResponse({
     status: 201,
     description: 'Redemption created successfully',
@@ -184,7 +188,7 @@ export class WebhookController {
       },
     },
   })
-  async handleRedemptionWebhook(@Body() data: WebhookPayloadDto) {
+  async handleRedemptionWebhook(@Body() data: GoldskyWebhookDto) {
     try {
       console.log('Received redemption webhook payload:', JSON.stringify(data, null, 2));
       const redemption = await this.webhookService.createRedemption(data);

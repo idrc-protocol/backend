@@ -6,6 +6,7 @@ import {
   ValidateNested,
   IsOptional,
   IsInt,
+  IsUUID,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { Type } from 'class-transformer';
@@ -90,6 +91,34 @@ class WebhookDataNew {
   })
   @IsInt()
   'block$': number;
+
+  // Make other fields optional since Goldsky structure varies
+  @ApiProperty({
+    description: 'Log index',
+    example: 268,
+    required: false,
+  })
+  @IsOptional()
+  @IsInt()
+  log_index?: number;
+
+  @ApiProperty({
+    description: 'Timestamp',
+    example: '1672705139',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  timestamp?: string;
+
+  @ApiProperty({
+    description: 'Block range',
+    example: '[16322627,)',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  block_range?: string;
 }
 
 class WebhookData {
@@ -143,4 +172,38 @@ export class WebhookPayloadDto {
   @IsString()
   @IsNotEmpty()
   entity: string;
+
+  @ApiProperty({
+    description: 'Webhook name',
+    example: 'idrc-webhook',
+  })
+  @IsString()
+  @IsNotEmpty()
+  webhook_name: string;
+
+  @ApiProperty({
+    description: 'Webhook ID',
+    example: 'webhook_clcfdc9gb00i50hyd43qeeidu',
+  })
+  @IsString()
+  @IsNotEmpty()
+  webhook_id: string;
+
+  @ApiProperty({
+    description: 'Unique event ID',
+    example: '36a1a4a6-1411-4a13-939c-9dd6422b5674',
+  })
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
+  @ApiProperty({
+    description: 'Delivery information',
+    example: { max_retries: 10, current_retry: 0 },
+  })
+  @IsObject()
+  delivery_info: {
+    max_retries: number;
+    current_retry: number;
+  };
 }

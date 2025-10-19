@@ -1,15 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '../../generated/prisma';
 import { WebhookPayloadDto } from './dto/webhook-payload.dto';
+import { GoldskyWebhookDto } from './dto/goldsky-webhook.dto';
 import { uuidv7 } from 'uuidv7';
 
 @Injectable()
 export class WebhookService {
   private prisma = new PrismaClient();
 
-  async createSubscription(data: WebhookPayloadDto) {
+  async createSubscription(data: GoldskyWebhookDto) {
     // Extract the required fields from the webhook payload
-    const { amount, transaction_hash, user } = data.data.new;
+    const entityData = data.data?.new;
+    
+    if (!entityData) {
+      throw new Error('No entity data found in webhook payload');
+    }
+
+    const { amount, transaction_hash, user } = entityData;
+    
+    if (!transaction_hash || !user || !amount) {
+      throw new Error('Missing required fields: transaction_hash, user, or amount');
+    }
 
     const result = await this.prisma.subscription.create({
       data: {
@@ -41,9 +52,19 @@ export class WebhookService {
     });
   }
 
-  async createRedemption(data: WebhookPayloadDto) {
+  async createRedemption(data: GoldskyWebhookDto) {
     // Extract the required fields from the webhook payload
-    const { amount, transaction_hash, user } = data.data.new;
+    const entityData = data.data?.new;
+    
+    if (!entityData) {
+      throw new Error('No entity data found in webhook payload');
+    }
+
+    const { amount, transaction_hash, user } = entityData;
+    
+    if (!transaction_hash || !user || !amount) {
+      throw new Error('Missing required fields: transaction_hash, user, or amount');
+    }
 
     const result = await this.prisma.redemption.create({
       data: {
