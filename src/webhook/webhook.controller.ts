@@ -67,12 +67,16 @@ export class WebhookController {
   })
   async handleSubscriptionWebhook(@Body() data: WebhookPayloadDto) {
     try {
+      console.log('Received webhook payload:', JSON.stringify(data, null, 2));
       const subscription = await this.webhookService.createSubscription(data);
+      console.log('Successfully created subscription:', subscription);
       return {
         success: true,
         data: subscription,
       };
     } catch (error) {
+      console.error('Webhook error:', error);
+      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -182,12 +186,16 @@ export class WebhookController {
   })
   async handleRedemptionWebhook(@Body() data: WebhookPayloadDto) {
     try {
+      console.log('Received redemption webhook payload:', JSON.stringify(data, null, 2));
       const redemption = await this.webhookService.createRedemption(data);
+      console.log('Successfully created redemption:', redemption);
       return {
         success: true,
         data: redemption,
       };
     } catch (error) {
+      console.error('Redemption webhook error:', error);
+      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
