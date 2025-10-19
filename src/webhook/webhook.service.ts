@@ -8,6 +8,23 @@ import { uuidv7 } from 'uuidv7';
 export class WebhookService {
   private prisma = new PrismaClient();
 
+  private formatHexString(hexString: string): string {
+    if (!hexString) return hexString;
+    
+    // If it starts with \x, convert to 0x format
+    if (hexString.startsWith('\\x')) {
+      return '0x' + hexString.slice(2);
+    }
+    
+    // If it already starts with 0x, return as is
+    if (hexString.startsWith('0x')) {
+      return hexString;
+    }
+    
+    // If it's just hex without prefix, add 0x
+    return '0x' + hexString;
+  }
+
   async createSubscription(data: GoldskyWebhookDto) {
     // Extract the required fields from the webhook payload
     const entityData = data.data?.new;
@@ -25,8 +42,8 @@ export class WebhookService {
     const result = await this.prisma.subscription.create({
       data: {
         id : uuidv7(),
-        txHash: transaction_hash,
-        user: user,
+        txHash: this.formatHexString(transaction_hash),
+        user: this.formatHexString(user),
         amount: BigInt(amount),
       },
     });
@@ -69,8 +86,8 @@ export class WebhookService {
     const result = await this.prisma.redemption.create({
       data: {
         id : uuidv7(),
-        txHash: transaction_hash,
-        user: user,
+        txHash: this.formatHexString(transaction_hash),
+        user: this.formatHexString(user),
         amount: BigInt(amount),
       },
     });
