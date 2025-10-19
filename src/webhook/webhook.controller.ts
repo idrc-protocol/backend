@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiHeader } from '@nestjs/swagger';
 import { WebhookService } from './webhook.service';
 import { WebhookPayloadDto } from './dto/webhook-payload.dto';
+import { GoldskyWebhookGuard } from './guards/goldsky-webhook.guard';
 
 @ApiTags('webhook')
 @Controller('webhook')
@@ -9,10 +10,16 @@ export class WebhookController {
   constructor(private readonly webhookService: WebhookService) {}
 
   @Post('subscription')
+  @UseGuards(GoldskyWebhookGuard)
   @ApiOperation({
     summary: 'Handle subscription webhook',
     description:
       'Processes webhook payload to create subscription record with transaction hash, user, and amount',
+  })
+  @ApiHeader({
+    name: 'goldsky-webhook-secret',
+    description: 'Goldsky webhook secret for authentication',
+    required: true,
   })
   @ApiBody({ type: WebhookPayloadDto })
   @ApiResponse({
@@ -44,6 +51,17 @@ export class WebhookController {
       properties: {
         success: { type: 'boolean', example: false },
         error: { type: 'string', example: 'Validation failed' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - invalid webhook secret',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 401 },
+        message: { type: 'string', example: 'Invalid webhook secret' },
       },
     },
   })
@@ -107,10 +125,16 @@ export class WebhookController {
   }
 
   @Post('redemption')
+  @UseGuards(GoldskyWebhookGuard)
   @ApiOperation({
     summary: 'Handle redemption webhook',
     description:
       'Processes webhook payload to create redemption record with transaction hash, user, and amount',
+  })
+  @ApiHeader({
+    name: 'goldsky-webhook-secret',
+    description: 'Goldsky webhook secret for authentication',
+    required: true,
   })
   @ApiBody({ type: WebhookPayloadDto })
   @ApiResponse({
@@ -142,6 +166,17 @@ export class WebhookController {
       properties: {
         success: { type: 'boolean', example: false },
         error: { type: 'string', example: 'Validation failed' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - invalid webhook secret',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 401 },
+        message: { type: 'string', example: 'Invalid webhook secret' },
       },
     },
   })
