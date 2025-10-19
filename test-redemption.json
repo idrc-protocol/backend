@@ -1,0 +1,23 @@
+{
+  "data": {
+    "new": {
+      "amount": 10000000,
+      "block_number": "32561425",
+      "block_timestamp": "1760891138",
+      "id": "x654379fadc44cc655c70998dce912b01050ddc7c863ccd6b0b3f81005577359b43000000",
+      "shares": "10000000",
+      "transaction_hash": "0x654379fadc44cc655c70998dce912b01050ddc7c863ccd6b0b3f81005577359b",
+      "user": "0xdd80522dc76eb92e549545563c4247d6976078ed",
+      "vid": "139850255486156903"
+    },
+    "old": null
+  },
+  "data_source": "idrc-indexer/1.0.1",
+  "entity": "requested_redemption",
+  "id": "MzE2NjA3OTE4OTQ3Mjow",
+  "op": "INSERT",
+  "session_variables": null,
+  "trace_context": null,
+  "webhook_id": "webhook_cmgxx09qdhum201v20xrsf54w",
+  "webhook_name": "idrc-webhook"
+}
