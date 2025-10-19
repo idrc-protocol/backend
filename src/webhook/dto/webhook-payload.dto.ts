@@ -7,15 +7,24 @@ import {
   IsOptional,
   IsInt,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
 import { Type } from 'class-transformer';
 
 class WebhookDataNew {
   @ApiProperty({
     description: 'Subscription amount',
-    example: 10000000,
+    example: '10000000',
+    type: 'string',
   })
-  @IsInt()
-  amount: number;
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => {
+    if (typeof value === 'number') {
+      return BigInt(value).toString();
+    }
+    return value;
+  })
+  amount: string;
 
   @ApiProperty({
     description: 'Block number',

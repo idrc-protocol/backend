@@ -19,7 +19,7 @@ model Subscription {
   id     String @id @db.Uuid
   txHash String
   user   String
-  amount Int
+  amount BigInt
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -30,7 +30,7 @@ model Redemption {
   id     String @id @db.Uuid
   txHash String
   user   String
-  amount Int
+  amount BigInt
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

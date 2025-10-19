@@ -11,18 +11,28 @@ export class WebhookService {
     // Extract the required fields from the webhook payload
     const { amount, transaction_hash, user } = data.data.new;
 
-    return this.prisma.subscription.create({
+    const result = await this.prisma.subscription.create({
       data: {
         id : uuidv7(),
         txHash: transaction_hash,
         user: user,
-        amount: amount,
+        amount: BigInt(amount),
       },
     });
+
+    // Convert BigInt to string for JSON serialization
+    return {
+      ...result,
+      amount: result.amount.toString(),
+    };
   }
 
   async getSubscriptions() {
-    return this.prisma.subscription.findMany();
+    const results = await this.prisma.subscription.findMany();
+    return results.map(result => ({
+      ...result,
+      amount: result.amount.toString(),
+    }));
   }
 
   async getSubscriptionByTxHash(txHash: string) {
@@ -35,18 +45,28 @@ export class WebhookService {
     // Extract the required fields from the webhook payload
     const { amount, transaction_hash, user } = data.data.new;
 
-    return this.prisma.redemption.create({
+    const result = await this.prisma.redemption.create({
       data: {
         id : uuidv7(),
         txHash: transaction_hash,
         user: user,
-        amount: amount,
+        amount: BigInt(amount),
       },
     });
+
+    // Convert BigInt to string for JSON serialization
+    return {
+      ...result,
+      amount: result.amount.toString(),
+    };
   }
 
   async getRedemptions() {
-    return this.prisma.redemption.findMany();
+    const results = await this.prisma.redemption.findMany();
+    return results.map(result => ({
+      ...result,
+      amount: result.amount.toString(),
+    }));
   }
 
   async getRedemptionByTxHash(txHash: string) {
