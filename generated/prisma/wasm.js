@@ -147,6 +147,10 @@ const config = {
         "fromEnvVar": null,
         "value": "darwin-arm64",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -164,6 +168,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -172,8 +177,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Subscription {\n  id        String   @id @default(uuid()) @db.Uuid\n  txHash    String\n  user      String\n  amount    Int\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"subscriptions\")\n}\n\nmodel Redemption {\n  id        String   @id @default(uuid()) @db.Uuid\n  txHash    String\n  user      String\n  amount    Int\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"redemptions\")\n}\n",
-  "inlineSchemaHash": "c08d5e98b17a401a48c16851eb865d6417727cc98a88b22b074d2f5beb79bdd7",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../generated/prisma\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Subscription {\n  id        String   @id @db.Uuid\n  txHash    String\n  user      String\n  amount    Int\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"subscriptions\")\n}\n\nmodel Redemption {\n  id        String   @id @db.Uuid\n  txHash    String\n  user      String\n  amount    Int\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"redemptions\")\n}\n",
+  "inlineSchemaHash": "56ed87adc3770fb430edc3291d7a073442b22861e91766305b0b599afe61dec0",
   "copyEngine": true
 }
 config.dirname = '/'

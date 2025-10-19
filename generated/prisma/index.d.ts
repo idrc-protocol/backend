@@ -3272,7 +3272,7 @@ export namespace Prisma {
   }
 
   export type SubscriptionCreateInput = {
-    id?: string
+    id: string
     txHash: string
     user: string
     amount: number
@@ -3281,7 +3281,7 @@ export namespace Prisma {
   }
 
   export type SubscriptionUncheckedCreateInput = {
-    id?: string
+    id: string
     txHash: string
     user: string
     amount: number
@@ -3308,7 +3308,7 @@ export namespace Prisma {
   }
 
   export type SubscriptionCreateManyInput = {
-    id?: string
+    id: string
     txHash: string
     user: string
     amount: number
@@ -3335,7 +3335,7 @@ export namespace Prisma {
   }
 
   export type RedemptionCreateInput = {
-    id?: string
+    id: string
     txHash: string
     user: string
     amount: number
@@ -3344,7 +3344,7 @@ export namespace Prisma {
   }
 
   export type RedemptionUncheckedCreateInput = {
-    id?: string
+    id: string
     txHash: string
     user: string
     amount: number
@@ -3371,7 +3371,7 @@ export namespace Prisma {
   }
 
   export type RedemptionCreateManyInput = {
-    id?: string
+    id: string
     txHash: string
     user: string
     amount: number

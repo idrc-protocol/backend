@@ -5,8 +5,9 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  provider      = "prisma-client-js"
+  output        = "../generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -15,7 +16,7 @@ datasource db {
 }
 
 model Subscription {
-  id        String   @id @default(uuid()) @db.Uuid
+  id        String   @id @db.Uuid
   txHash    String
   user      String
   amount    Int
@@ -26,7 +27,7 @@ model Subscription {
 }
 
 model Redemption {
-  id        String   @id @default(uuid()) @db.Uuid
+  id        String   @id @db.Uuid
   txHash    String
   user      String
   amount    Int
