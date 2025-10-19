@@ -79,8 +79,8 @@ class WebhookDataNew {
     description: 'Block number (numeric)',
     example: 32561425,
   })
-  @IsOptional()
-  'block$'?: number;
+  @IsInt()
+  'block$': number;
 }
 
 class WebhookData {
@@ -102,6 +102,14 @@ class WebhookData {
 }
 
 export class WebhookPayloadDto {
+  @ApiProperty({
+    description: 'Operation type',
+    example: 'INSERT',
+  })
+  @IsString()
+  @IsNotEmpty()
+  op: string;
+
   @ApiProperty({
     description: 'Webhook data containing subscription information',
     type: WebhookData,
@@ -126,50 +134,4 @@ export class WebhookPayloadDto {
   @IsString()
   @IsNotEmpty()
   entity: string;
-
-  @ApiProperty({
-    description: 'Webhook record ID',
-    example: 'MzE2NjA3OTE4OTQ3Mjow',
-  })
-  @IsString()
-  @IsNotEmpty()
-  id: string;
-
-  @ApiProperty({
-    description: 'Operation type',
-    example: 'INSERT',
-  })
-  @IsString()
-  @IsNotEmpty()
-  op: string;
-
-  @ApiProperty({
-    description: 'Session variables',
-    example: null,
-  })
-  @IsOptional()
-  session_variables: any;
-
-  @ApiProperty({
-    description: 'Trace context',
-    example: null,
-  })
-  @IsOptional()
-  trace_context: any;
-
-  @ApiProperty({
-    description: 'Webhook ID',
-    example: 'webhook_cmgxx09qdhum201v20xrsf54w',
-  })
-  @IsString()
-  @IsNotEmpty()
-  webhook_id: string;
-
-  @ApiProperty({
-    description: 'Webhook name',
-    example: 'idrc-webhook',
-  })
-  @IsString()
-  @IsNotEmpty()
-  webhook_name: string;
 }
