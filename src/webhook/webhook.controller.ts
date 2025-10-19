@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards, UseInterceptors, Req, Res, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiHeader } from '@nestjs/swagger';
 import { WebhookService } from './webhook.service';
-import { WebhookPayloadDto } from './dto/webhook-payload.dto';
 import { GoldskyWebhookDto } from './dto/goldsky-webhook.dto';
 import { GoldskyWebhookGuard } from './guards/goldsky-webhook.guard';
 import { WebhookLoggingInterceptor } from './interceptors/webhook-logging.interceptor';

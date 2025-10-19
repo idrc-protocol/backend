@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '../../generated/prisma';
-import { WebhookPayloadDto } from './dto/webhook-payload.dto';
 import { GoldskyWebhookDto } from './dto/goldsky-webhook.dto';
 import { uuidv7 } from 'uuidv7';
 
